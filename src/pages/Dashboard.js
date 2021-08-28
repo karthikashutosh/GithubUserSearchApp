@@ -10,7 +10,7 @@ const Dashboard = () => {
       <Info />
       <User />
 
-      {/* <Repos /> */}
+      <Repos />
     </main>
   );
 };
