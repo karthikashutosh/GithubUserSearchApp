@@ -1,41 +1,47 @@
-import React from 'react';
-import { GithubContext } from '../context/context';
-import styled from 'styled-components';
-import { MdBusiness, MdLocationOn, MdLink } from 'react-icons/md';
+import React from "react";
+import { GithubContext } from "../context/context";
+import styled from "styled-components";
+import { MdBusiness, MdLocationOn, MdLink } from "react-icons/md";
 const Card = () => {
+  const { githubUser } = React.useContext(GithubContext);
+  const {
+    avatar_url,
+    html_url,
+    name,
+    company,
+    blog,
+    bio,
+    location,
+    twitter_username,
+  } = githubUser;
+  return (
+    <Wrapper>
+      <header>
+        <img src={avatar_url} alt={name} />
+        <div>
+          <h4>{name}</h4>
+          <p>{twitter_username}</p>
+        </div>
+        <a href={html_url}>follow</a>
+        <p className="bio">{bio}</p>
+        <div className="links">
+          <p>
+            <MdBusiness></MdBusiness>
+            {company}
+          </p>
+          <p>
+            <MdLocationOn></MdLocationOn>
+            {location}
+          </p>
 
-  const{githubUser} = React.useContext(GithubContext);
-  const{
-avatar_url,
-html_url,
-name,
-company,
-blog,
-bio,
-location,
-twitter_username
-  }= githubUser;
-  return <Wrapper>
-    <header>
-      <img src={avatar_url} alt={name} />
-      <div>
-        <h4>{name}</h4>
-        <p>{twitter_username}</p>
-      </div>
-      <a href={html_url}>follow</a>
-      <p className="bio">{bio}</p>
-      <div className="links">
-        <p><MdBusiness></MdBusiness>{company}</p>
-        <p><MdLocationOn></MdLocationOn>{location}</p>
-
-        <a href={`http://${blog}`}>
-          <MdLink></MdLink>
-          {blog}
-        </a>
-
-      </div>
-    </header>
-  </Wrapper>;
+          <a href={`http://${blog}`}>
+            <MdLink></MdLink>
+            {blog}
+          </a>
+        </div>
+      </header>
+    </Wrapper>
+  );
 };
 const Wrapper = styled.article`
   background: var(--clr-white);
@@ -45,7 +51,7 @@ const Wrapper = styled.article`
   border-bottom-right-radius: var(--radius);
   position: relative;
   &::before {
-    content: 'user';
+    content: "user";
     position: absolute;
     top: 0;
     left: 0;
