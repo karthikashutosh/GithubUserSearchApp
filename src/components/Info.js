@@ -19,50 +19,46 @@ const UserInfo = () => {
     {
       id: 2,
       icon: <FiUsers className="icons" />,
-      label: "repos",
+      label: "followers",
       value: followers,
       color: "green",
     },
     {
       id: 3,
       icon: <FiUserPlus className="icons" />,
-      label: "repos",
+      label: "following",
       value: following,
       color: "purple",
     },
     {
       id: 4,
       icon: <GoGist className="icons" />,
-      label: "repos",
+      label: "gist",
       value: public_gist,
       color: "yellow",
     },
   ];
-  return <section className="section">
-    <Wrapper className="section-center">
-      {items.map((item)=>{
-        return <Item key={items.id} {...item}>
-
-        </Item>
-      }
-      
-
-      )}
-
-    </Wrapper>
-
-  </section>;
+  return (
+    <section className="section">
+      <Wrapper className="section-center">
+        {items.map((item) => {
+          return <Item key={items.id} {...item}></Item>;
+        })}
+      </Wrapper>
+    </section>
+  );
 };
-const Item = ({icon,label,value,color})=>{
-  return<article className="item">
-    <span className={color}>{icon}</span>
-    <div>
-      <h3>{value}</h3>
-      <p>{label}</p>
-    </div>
-
-  </article>
-}
+const Item = ({ icon, label, value, color }) => {
+  return (
+    <article className="item">
+      <span className={color}>{icon}</span>
+      <div>
+        <h3>{value}</h3>
+        <p>{label}</p>
+      </div>
+    </article>
+  );
+};
 
 const Wrapper = styled.section`
   display: grid;
