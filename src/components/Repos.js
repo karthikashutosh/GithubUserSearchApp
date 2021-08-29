@@ -1,33 +1,50 @@
-import React from 'react';
-import styled from 'styled-components';
-import { GithubContext } from '../context/context';
-import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from './Charts';
+import React from "react";
+import styled from "styled-components";
+import { GithubContext } from "../context/context";
+import { ExampleChart, Pie3D, Column3D, Bar3D, Doughnut2D } from "./Charts";
 const Repos = () => {
+  const { repos } = React.useContext(GithubContext);
 
-  const{repos} = React.useContext(GithubContext)
-  console.log(repos)
+  let Languages = repos.reduce((total, item) => {
+    const { language } = item;
+    if (!language) return total;
+    console.log(language);
+
+    if (!total[language]) {
+      total[language] = {label:language,value:1};
+    } else {
+      total[language] = {...total[language],value:total[language].value +1 }
+    }
+
+    return total;
+  }, {});
+  // console.log(Languages);
+  
+  Languages = Object.values(Languages).sort((a,b)=>{
+     return b.value - a.value;
+  }).slice(0,5)
+
   const chartData = [
     {
       label: "Html",
-      value: "67"
+      value: "67",
     },
     {
       label: "Css",
-      value: "89"
+      value: "89",
     },
     {
       label: "JavaScript",
-      value: "100"
+      value: "100",
     },
-    
   ];
-  return <section className="section">
-
-    <Wrapper className="section-center">
-
-    <ExampleChart data={chartData}/>
-    </Wrapper>
-  </section>
+  return (
+    <section className="section">
+      <Wrapper className="section-center">
+        <Pie3D data={chartData} />
+      </Wrapper>
+    </section>
+  );
 };
 
 const Wrapper = styled.div`
