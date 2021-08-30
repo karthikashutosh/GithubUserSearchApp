@@ -22,7 +22,6 @@ const Repos = () => {
 
     return total;
   }, {});
-  // console.log(Languages);
 
   const mostUsed = Object.values(Languages)
     .sort((a, b) => {
@@ -30,36 +29,39 @@ const Repos = () => {
     })
     .slice(0, 5);
 
-  const mostStar = Object.values(Languages).sort((a, b) => {
-    return b.stars - a.stars
-  }).map((item)=>{
-    return {...item,value:item.stars}
-    
-  }).slice(0,5);
-  console.log(mostStar)
+  const mostStar = Object.values(Languages)
+    .sort((a, b) => {
+      return b.stars - a.stars;
+    })
+    .map((item) => {
+      return { ...item, value: item.stars };
+    })
+    .slice(0, 5);
 
-  const chartData = [
-    {
-      label: "Html",
-      value: "67",
+  let { stars, forks } = repos.reduce(
+    (total, item) => {
+      const { stargazers_count, name, forks } = item;
+      total.stars[stargazers_count] = { label: name, value: stargazers_count };
+      total.forks[forks] ={label:name,value:forks}
+      return total;
     },
     {
-      label: "Css",
-      value: "89",
-    },
-    {
-      label: "JavaScript",
-      value: "100",
-    },
-  ];
+      stars: {},
+      forks: {},
+    }
+  );
+  stars = Object.values(stars).slice(-5).reverse();
+  forks = Object.values(forks).slice(-5).reverse();
+
+  // console.log(stars)
+ 
   return (
     <section className="section">
       <Wrapper className="section-center">
-        <div></div>
         <Pie3D data={mostUsed} />
-        <div></div>
+        <Column3D data={stars} />
         <Doughnut2D data={mostStar} />
-        <div></div>
+        <Bar3D data={forks} />
       </Wrapper>
     </section>
   );
