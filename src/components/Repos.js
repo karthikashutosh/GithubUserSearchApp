@@ -6,23 +6,37 @@ const Repos = () => {
   const { repos } = React.useContext(GithubContext);
 
   let Languages = repos.reduce((total, item) => {
-    const { language } = item;
+    const { language, stargazers_count } = item;
     if (!language) return total;
-    console.log(language);
+    // console.log(language);
 
     if (!total[language]) {
-      total[language] = {label:language,value:1};
+      total[language] = { label: language, value: 1, stars: stargazers_count };
     } else {
-      total[language] = {...total[language],value:total[language].value +1 }
+      total[language] = {
+        ...total[language],
+        value: total[language].value + 1,
+        stars: stargazers_count + 1,
+      };
     }
 
     return total;
   }, {});
   // console.log(Languages);
-  
-  Languages = Object.values(Languages).sort((a,b)=>{
-     return b.value - a.value;
-  }).slice(0,5)
+
+  const mostUsed = Object.values(Languages)
+    .sort((a, b) => {
+      return b.value - a.value;
+    })
+    .slice(0, 5);
+
+  const mostStar = Object.values(Languages).sort((a, b) => {
+    return b.stars - a.stars
+  }).map((item)=>{
+    return {...item,value:item.stars}
+    
+  }).slice(0,5);
+  console.log(mostStar)
 
   const chartData = [
     {
@@ -41,7 +55,11 @@ const Repos = () => {
   return (
     <section className="section">
       <Wrapper className="section-center">
-        <Pie3D data={chartData} />
+        <div></div>
+        <Pie3D data={mostUsed} />
+        <div></div>
+        <Doughnut2D data={mostStar} />
+        <div></div>
       </Wrapper>
     </section>
   );
