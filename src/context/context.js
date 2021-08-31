@@ -31,19 +31,20 @@ const GithubProvider = ({ children }) => {
       setGithubUser(response.data);
       const { login, followers_url } = response.data;
 
-      await Promise.allSettled([
-        axios(`${rootUrl}/users/${login}/repos?per_page=100`),
-        axios(`${followers_url}?per_page=100`),
-      ]).then((results) => {
-        const { repos, followers } = results;
+      await Promise.allSettled([ axios(`${rootUrl}/users/${login}/repos?per_page=100`),
+      axios(`${followers_url}?per_page=100`),]).then((results)=>{
 
-        if (repos.status === "fulfilled") {
-          setRepos(repos.value.data);
+        const [repos,followers] =results;
+
+        if(repos.status === "fulfilled"){
+          setRepos(repos.value.data)
         }
-        if (followers.status === "fulfilled") {
-          setFollowers(followers.value.data);
+        if(followers.status === "fufilled"){
+          setFollowers(followers.value.data)
         }
-      });
+      })
+
+      
     } else {
       toggleError(true, "Sorry there is no user avaiable");
     }
