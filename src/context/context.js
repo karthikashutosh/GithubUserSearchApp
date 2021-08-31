@@ -17,6 +17,22 @@ const GithubProvider = ({ children }) => {
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState({ show: false, msg: "" });
 
+  //searchUser
+   const searchGithubUser = async (user) =>{
+  
+    const response = await axios(`${rootUrl}/users/${user}`).catch((err)=>console.log(err))
+
+    if(response){
+      // console.log(response.data)
+      toggleError()
+      setGithubUser(response.data)
+    }else{
+      toggleError(true,"Sorry there is no user avaiable")
+    }
+
+   }
+
+  //check requests
   const checkRequests = () => {
     axios(`${rootUrl}/rate_limit`)
       .then(({ data }) => {
@@ -28,19 +44,31 @@ const GithubProvider = ({ children }) => {
 
         if (remaining === 0) {
           //error message
-          toggleError(true,"Sorry,Your request limit Exceeded.Try after some time")
+          toggleError(
+            true,
+            "Sorry,Your request limit Exceeded.Try after some time"
+          );
         }
       })
       .catch((err) => {
         // console.log(err)
       });
   };
-  function toggleError (show,msg){
-    setError({show,msg})
+  function toggleError(show = false, msg = "") {
+    setError({ show, msg });
   }
   useEffect(checkRequests, []);
   return (
-    <GithubContext.Provider value={{ githubUser, repos, followers, requests,error }}>
+    <GithubContext.Provider
+      value={{
+        githubUser,
+        repos,
+        followers,
+        requests,
+        error,
+        searchGithubUser,
+      }}
+    >
       {children}
     </GithubContext.Provider>
   );
